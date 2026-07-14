@@ -1,0 +1,101 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Arial, sans-serif; /* Slightly more modern fallback font */
+}
+
+body {
+    background: #121212; /* Deeper dark mode background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.calculator {
+    background: #1e1e1e; /* Sleek dark gray for the chassis */
+    padding: 24px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    width: 340px;
+}
+
+#display {
+    width: 100%;
+    height: 70px;
+    font-size: 32px;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    text-align: right;
+    border: none;
+    outline: none;
+    border-radius: 12px;
+    background: #2d2d2d; /* Dark display screen for a unified dark theme */
+    color: #ffffff;
+}
+
+/* Base setup for the grid */
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+/* Standard button styles */
+button {
+    height: 60px;
+    font-size: 22px;
+    border: none;
+    border-radius: 50%; /* Makes number buttons perfectly circular or oval */
+    cursor: pointer;
+    background: #3a3a3a; /* Darker gray for number buttons */
+    color: #ffffff;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+/* Hover state for normal numbers */
+button:hover {
+    background: #4a4a4a;
+}
+
+/* Tactile click effect */
+button:active {
+    transform: scale(0.95);
+}
+
+/* Operator buttons (+, -, ×, ÷) */
+.btn-operator {
+    background: #ff9f0a; /* Classic orange operator color */
+    color: white;
+}
+
+.btn-operator:hover {
+    background: #cc7f08;
+}
+
+/* Utility buttons (C, ⌫, %) */
+.btn-clear, .btn-util {
+    background: #a5a5a5;
+    color: #000000; /* Dark text on light gray for contrast */
+}
+
+.btn-clear:hover, .btn-util:hover {
+    background: #8e8e8e;
+}
+
+/* Equal button styling */
+.btn-equal {
+    background: #2ecc71; /* Accent green for the final result */
+    color: white;
+}
+
+.btn-equal:hover {
+    background: #27ae60;
+}
+
+/* Make the 0 button span 2 columns if you want a classic layout */
+/* Note: In the previous HTML, if you want '0' wide, remove one extra button or let '=' stretch */
+.btn-zero {
+    border-radius: 30px; /* Adjusted radius since it spans wider */
+}

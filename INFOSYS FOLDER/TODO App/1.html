@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced To-Do App</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 min-h-screen font-sans text-slate-800 antialiased">
+
+    <div class="max-w-3xl mx-auto px-4 py-12">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">Daily Task Tracker</h1>
+            <p class="mt-2 text-md text-slate-600">Keep organized, stay productive.</p>
+        </header>
+
+        <div class="bg-white rounded-xl shadow-xs border border-slate-100 p-6 mb-8">
+            <form id="taskForm" class="flex gap-2">
+                <input 
+                    type="text" 
+                    id="taskInput" 
+                    placeholder="What needs to be done today?" 
+                    required
+                    class="flex-1 px-4 py-3 rounded-lg border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                >
+                <button 
+                    type="submit" 
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200 shadow-xs cursor-pointer"
+                >
+                    Add Task
+                </button>
+            </form>
+        </div>
+
+        <div class="space-y-8">
+            
+            <section class="bg-white rounded-xl shadow-xs border border-slate-100 p-6">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
+                    <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                        Pending Tasks 
+                        <span id="pendingCount" class="text-xs bg-amber-100 text-amber-800 px-2.5 py-0.5 rounded-full font-semibold">0</span>
+                    </h2>
+                </div>
+                <ul id="pendingList" class="divide-y divide-slate-100 space-y-3"></ul>
+            </section>
+
+            <section class="bg-white rounded-xl shadow-xs border border-slate-100 p-6">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
+                    <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                        Completed Tasks
+                        <span id="completedCount" class="text-xs bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-semibold">0</span>
+                    </h2>
+                </div>
+                <ul id="completedList" class="divide-y divide-slate-100 space-y-3"></ul>
+            </section>
+            
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

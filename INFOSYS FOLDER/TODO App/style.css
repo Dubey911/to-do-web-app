@@ -1,0 +1,22 @@
+/* Custom keyframes and utilities extending the layout rules */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.2s ease-out forwards;
+}
+
+/* Optional fixes for word containment boundaries */
+.break-words {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}

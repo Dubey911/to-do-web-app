@@ -1,0 +1,138 @@
+// State Management
+let tasks = [];
+
+// DOM Element Registry
+const taskForm = document.getElementById('taskForm');
+const taskInput = document.getElementById('taskInput');
+const pendingList = document.getElementById('pendingList');
+const completedList = document.getElementById('completedList');
+const pendingCount = document.getElementById('pendingCount');
+const completedCount = document.getElementById('completedCount');
+
+// Helper function to format date/time strings cleanly
+function formatDateTime() {
+    const now = new Date();
+    return now.toLocaleString([], { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' });
+}
+
+// Add Task Form Event Handling Listener
+taskForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const taskText = taskInput.value.trim();
+    if (!taskText) return;
+
+    const newTask = {
+        id: Date.now(),
+        text: taskText,
+        completed: false,
+        createdAt: formatDateTime(),
+        completedAt: null
+    };
+
+    tasks.push(newTask);
+    taskInput.value = '';
+    renderApp();
+});
+
+// Remove task completely out of state memory
+window.deleteTask = function(id) {
+    tasks = tasks.filter(task => task.id !== id);
+    renderApp();
+};
+
+// Toggle status switch between Complete and Pending modes
+window.toggleTaskStatus = function(id) {
+    tasks = tasks.map(task => {
+        if (task.id === id) {
+            const isCompleting = !task.completed;
+            return {
+                ...task,
+                completed: isCompleting,
+                completedAt: isCompleting ? formatDateTime() : null
+            };
+        }
+        return task;
+    });
+    renderApp();
+};
+
+// Edit Existing Text Node fields
+window.editTask = function(id) {
+    const task = tasks.find(t => t.id === id);
+    if (!task) return;
+
+    const newText = prompt("Edit your task:", task.text);
+    if (newText !== null && newText.trim() !== "") {
+        task.text = newText.trim();
+        renderApp();
+    }
+};
+
+// Construct HTML row layouts out of mapped elements
+function createTaskRow(task) {
+    return `
+        <li class="flex items-center justify-between py-3 group animate-fadeIn">
+            <div class="flex items-center space-x-3 flex-1 min-w-0">
+                <input 
+                    type="checkbox" 
+                    ${task.completed ? 'checked' : ''} 
+                    onclick="toggleTaskStatus(${task.id})"
+                    class="h-5 w-5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                >
+                <div class="flex flex-col min-w-0">
+                    <span class="text-sm font-medium ${task.completed ? 'line-through text-slate-400' : 'text-slate-700'} break-words">
+                        ${task.text}
+                    </span>
+                    <div class="flex items-center gap-2 mt-0.5 text-[11px] text-slate-400">
+                        <span>Created: ${task.createdAt}</span>
+                        ${task.completedAt ? `<span class="text-emerald-600 font-medium">• Completed: ${task.completedAt}</span>` : ''}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-1 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity duration-150 pl-2">
+                <button 
+                    onclick="editTask(${task.id})" 
+                    class="p-1.5 rounded-md hover:bg-slate-100 text-slate-500 hover:text-indigo-600 transition-colors cursor-pointer"
+                    title="Edit task"
+                >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>
+                </button>
+                <button 
+                    onclick="deleteTask(${task.id})" 
+                    class="p-1.5 rounded-md hover:bg-red-50 text-slate-500 hover:text-red-600 transition-colors cursor-pointer"
+                    title="Delete task"
+                >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                </button>
+            </div>
+        </li>
+    `;
+}
+
+// Global engine synchronization method
+function renderApp() {
+    const pendingTasks = tasks.filter(t => !t.completed);
+    const completedTasks = tasks.filter(t => t.completed);
+
+    // Sync state counter metrics
+    pendingCount.textContent = pendingTasks.length;
+    completedCount.textContent = completedTasks.length;
+
+    // Refresh Pending Nodes Lists viewports
+    if (pendingTasks.length === 0) {
+        pendingList.innerHTML = `<li class="text-sm text-slate-400 italic text-center py-4">No pending tasks! Enjoy your free time.</li>`;
+    } else {
+        pendingList.innerHTML = pendingTasks.map(task => createTaskRow(task)).join('');
+    }
+
+    // Refresh Completed Nodes Lists viewports
+    if (completedTasks.length === 0) {
+        completedList.innerHTML = `<li class="text-sm text-slate-400 italic text-center py-4">No tasks completed yet.</li>`;
+    } else {
+        completedList.innerHTML = completedTasks.map(task => createTaskRow(task)).join('');
+    }
+}
+
+// Fire initial build to paint empty arrays states
+renderApp();
